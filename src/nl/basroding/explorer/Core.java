@@ -2,8 +2,12 @@ package nl.basroding.explorer;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import nl.basroding.explorer.display.Scene;
+import nl.basroding.explorer.scenes.GameScene;
 
 /**
  *
@@ -11,60 +15,70 @@ import nl.basroding.explorer.display.Scene;
  */
 public class Core implements ApplicationListener
 {
-	private SpriteBatch spriteBatch;
-	private Scene scene;
+    private Stage stage;
+    private SpriteBatch spriteBatch;
+    private Scene scene;
+    private OrthographicCamera camera;
+
+    public Core(Scene scene)
+    {
+	Game.core = this;
+	this.scene = scene;
+    }
+
+    @Override
+    public void create()
+    {
+	spriteBatch = new SpriteBatch();
+	stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true, spriteBatch);
+	scene = new GameScene();
+	camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+	stage.setCamera(camera);
+	stage.addActor(scene);
+	stage.setKeyboardFocus(scene);
+	Gdx.input.setInputProcessor(stage);
+    }
+
+    @Override
+    public void resize(int i, int i1)
+    {
+    }
+
+    @Override
+    public void render()
+    {
+	if (spriteBatch == null)
+	    return;
 	
-	public Core(Scene scene)
-	{
-		Game.core = this;
-		this.scene = scene;
-	}
+	Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 	
-	@Override
-	public void create()
+	stage.act();
+	stage.draw();
+    }
+
+    @Override
+    public void pause()
+    {
+    }
+
+    @Override
+    public void resume()
+    {
+    }
+
+    @Override
+    public void dispose()
+    {
+	this.scene.dispose();
+    }
+
+    public void switchScene(Scene scene)
+    {
+	if (this.scene != null)
 	{
-		this.spriteBatch = new SpriteBatch();
+	    this.scene.dispose();
 	}
 
-	@Override
-	public void resize(int i, int i1)
-	{
-	}
-
-	@Override
-	public void render()
-	{
-		if(spriteBatch == null)
-			return;
-		
-		this.scene.act(Gdx.graphics.getDeltaTime());
-		
-		spriteBatch.begin();
-		this.scene.draw(spriteBatch, 1.0f);
-		spriteBatch.end();
-	}
-
-	@Override
-	public void pause()
-	{
-	}
-
-	@Override
-	public void resume()
-	{
-	}
-
-	@Override
-	public void dispose()
-	{
-		this.scene.dispose();
-	}
-
-	public void switchScene(Scene scene)
-	{
-		if(this.scene != null)
-			this.scene.dispose();
-		
-		this.scene = scene;
-	}
+	this.scene = scene;
+    }
 }

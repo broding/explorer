@@ -16,21 +16,21 @@ import nl.basroding.explorer.scenes.GameScene;
 public class Explorer
 {
 
-	/**
-	 * @param args the command line arguments
-	 */
-	public static void main(String[] args)
-	{
-		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        
-        config.title = "Explorer";
-        config.resizable = false;
-		config.fullscreen = false;
-        config.width = 1280;
-        config.height = 800;
-        config.useGL20 = true;
-		config.samples = 2;
-		
-        LwjglApplication app = new LwjglApplication(new Core(new GameScene()), config);
-	}
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args)
+    {
+	LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+
+	config.title = "Explorer";
+	config.resizable = false;
+	config.fullscreen = false;
+	config.width = 1280;
+	config.height = 800;
+	config.useGL20 = true;
+	config.samples = 2;
+
+	LwjglApplication app = new LwjglApplication(new Core(null), config);
+    }
 }
