@@ -31,10 +31,21 @@ public class PlanetActor extends Actor
 	super.draw(batch, parentAlpha);
 	
 	shapeRenderer.begin(ShapeType.Filled);
+        
 	shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
 	shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
 	shapeRenderer.setColor(1,1,1,1);
-	shapeRenderer.circle(planet.getPosition().x * 20, planet.getPosition().y * 20, 10);
-	shapeRenderer.end();
+	shapeRenderer.circle(0,0, planet.getRadius());
+        shapeRenderer.end();
+        
+        for(Planet orbiter : planet.getOrbiters())
+        {
+            shapeRenderer.begin(ShapeType.Line);
+            shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
+            shapeRenderer.setColor(0.2f,0.2f,0.2f,0.1f);
+            shapeRenderer.circle(planet.getPosition().x, planet.getPosition().y, orbiter.getPosition().dst(planet.getPosition()));
+            shapeRenderer.end();
+        }
+        
     }
 }

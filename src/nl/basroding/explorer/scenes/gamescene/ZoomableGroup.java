@@ -25,6 +25,8 @@ public class ZoomableGroup extends Group
 	this.setTouchable(Touchable.enabled);
 	
 	camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.setToOrtho(false);
+        camera.lookAt(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0);
 	
 	addListener(new InputListener()
 	{
@@ -37,7 +39,6 @@ public class ZoomableGroup extends Group
 	    @Override
 	    public boolean keyDown(InputEvent event, int keycode)
 	    {
-		    
 		if(keycode == Keys.PLUS)
 		{
 		    ZoomableGroup group = (ZoomableGroup) event.getRelatedActor();
@@ -57,8 +58,6 @@ public class ZoomableGroup extends Group
     public void draw(SpriteBatch batch, float parentAlpha)
     {
 	Matrix4 oldProjection = batch.getProjectionMatrix();
-
-	System.out.println(camera.zoom);
 	camera.update();
 	batch.setProjectionMatrix(camera.projection);
 	super.draw(batch, parentAlpha);
