@@ -1,9 +1,12 @@
 package nl.basroding.explorer.scenes;
 
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import java.util.ArrayList;
+import nl.basroding.explorer.Game;
 import nl.basroding.explorer.display.Scene;
 import nl.basroding.explorer.models.Galaxy;
 import nl.basroding.explorer.scenes.gamescene.StarSystemMap;
@@ -16,23 +19,39 @@ import nl.basroding.explorer.scenes.gamescene.ZoomableGroup;
 public class GameScene extends Scene 
 {
     private Galaxy galaxy;	
+    private ZoomableGroup currentMap;
     
-    private ArrayList<ZoomableGroup> maps;
+    private float dragTime;
+    private boolean dragging;
+    private Vector2 dragStart;
+    
     
     public GameScene()
     {
 	setTouchable(Touchable.enabled);
-	maps = new ArrayList<ZoomableGroup>();
+	
+	dragging = false;
+	dragStart = Vector2.Zero;
+	
 	galaxy = new Galaxy();
-	addMap(new StarSystemMap(galaxy.getStarSystems().get(0)));
+	currentMap = new StarSystemMap(galaxy.getStarSystems().get(0));
+	
+	addActor(currentMap);
 	
 	addListener(new InputListener()
 	{
 	    @Override
 	    public boolean keyDown(InputEvent event, int keycode)
 	    {
-		for(ZoomableGroup map : maps)
-		    map.onZoomInput(-0.01f);
+		if(keycode == Input.Keys.PLUS)
+		{
+		    currentMap.onZoomInput(-16);
+		}
+		
+		if(keycode == Input.Keys.MINUS)
+		{
+		    currentMap.onZoomInput(16);
+		}
 		
 		return false;
 	    }
@@ -40,26 +59,48 @@ public class GameScene extends Scene
 	    @Override
 	    public boolean scrolled(InputEvent event, float x, float y, int amount)
 	    {
-		for(ZoomableGroup map : maps)
-		    map.onZoomInput(amount/4);
+		currentMap.onZoomInput(amount*16);
 		
-		return super.scrolled(event, x, y, amount); //To change body of generated methods, choose Tools | Templates.
+		return super.scrolled(event, x, y, amount);
+	    }
+
+	    @Override
+	    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+	    {
+		if(button == 1)
+		{
+		    dragging = true;
+		    dragStart.set(x, y);
+		    return true;
+		}
+		
+		return false;
+	    }
+
+	    @Override
+	    public boolean mouseMoved(InputEvent event, float x, float y)
+	    {
+		if(dragging)
+		{
+		    Game.getCamera().setPosition(new Vector2(x, y));
+		    Game.getCamera().update();
+		    return true;
+		}
+		
+		return super.mouseMoved(event, x, y); 
 	    }
 	    
 	    
+
+	    @Override
+	    public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+	    {
+		dragging = false;
+		
+		super.touchUp(event, x, y, pointer, button);
+	    }
+	    
 	    
 	});
-    }
-    
-    private void addMap(ZoomableGroup map)
-    {
-	this.maps.add(map);
-	addActor(map);
-    }
-    
-    public void onZoomInput(float zoom)
-    {
-	for(ZoomableGroup map : maps)
-	    map.onZoomInput(zoom);
     }
 }

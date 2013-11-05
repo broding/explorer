@@ -6,10 +6,12 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import nl.basroding.explorer.Game;
 
 /**
  *
@@ -17,61 +19,22 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
  */
 public class ZoomableGroup extends Group
 {
-    private OrthographicCamera camera;
+    private Actor selectedActor;
 
     public ZoomableGroup()
     {
 	this.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 	this.setTouchable(Touchable.enabled);
-	
-	camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.setToOrtho(false);
-        camera.lookAt(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0);
-	
-	addListener(new InputListener()
-	{
-	    @Override
-	    public boolean scrolled(InputEvent event, float x, float y, int amount)
-	    {
-		return super.scrolled(event, x, y, amount); //To change body of generated methods, choose Tools | Templates.
-	    }
-
-	    @Override
-	    public boolean keyDown(InputEvent event, int keycode)
-	    {
-		if(keycode == Keys.PLUS)
-		{
-		    ZoomableGroup group = (ZoomableGroup) event.getRelatedActor();
-		    group.onZoomInput(1);
-		}
-		else if(keycode == Keys.MINUS)
-		{
-		    ZoomableGroup group = (ZoomableGroup) event.getRelatedActor();
-		    group.onZoomInput(1);
-		}
-		return false;
-	    }
-	});
-    }
-
-    @Override
-    public void draw(SpriteBatch batch, float parentAlpha)
-    {
-	Matrix4 oldProjection = batch.getProjectionMatrix();
-	camera.update();
-	batch.setProjectionMatrix(camera.projection);
-	super.draw(batch, parentAlpha);
-
-	batch.setProjectionMatrix(oldProjection);
     }
     
     public void onZoomInput(float zoom)
     {
-	camera.zoom += zoom;
+	Game.getCamera().zoom += Game.getCamera().zoom / 100 * zoom;
+	Game.getCamera().update();
     }
-
-    public OrthographicCamera getCamera()
+    
+    public void selectActor(Actor actor)
     {
-	return camera;
+	Game.getCamera().translate(actor.getX(), actor.getY());
     }
 }

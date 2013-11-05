@@ -2,11 +2,13 @@ package nl.basroding.explorer;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import nl.basroding.explorer.display.Scene;
+import nl.basroding.explorer.display.SpaceCamera;
 import nl.basroding.explorer.scenes.GameScene;
 
 /**
@@ -18,7 +20,7 @@ public class Core implements ApplicationListener
     private Stage stage;
     private SpriteBatch spriteBatch;
     private Scene scene;
-    private OrthographicCamera camera;
+    private SpaceCamera camera;
 
     public Core(Scene scene)
     {
@@ -32,10 +34,11 @@ public class Core implements ApplicationListener
 	spriteBatch = new SpriteBatch();
 	stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true, spriteBatch);
 	scene = new GameScene();
-	camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+	camera = new SpaceCamera();
 	stage.setCamera(camera);
 	stage.addActor(scene);
 	stage.setKeyboardFocus(scene);
+	stage.setScrollFocus(scene);
 	Gdx.input.setInputProcessor(stage);
     }
 
@@ -80,5 +83,10 @@ public class Core implements ApplicationListener
 	}
 
 	this.scene = scene;
+    }
+
+    public SpaceCamera getCamera()
+    {
+	return this.camera;
     }
 }

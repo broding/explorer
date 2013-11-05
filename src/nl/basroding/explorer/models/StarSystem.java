@@ -11,7 +11,7 @@ import java.util.Random;
  */
 public class StarSystem
 {   
-    public final static int MINIMAL_PLANET_DISTANCE = Sun.SUN_MIN_RADIUS * 1;
+    public final static int MINIMAL_PLANET_DISTANCE = Sun.SUN_MIN_RADIUS * 3;
     public static Random random;
     
     private Vector2 position;
@@ -25,7 +25,7 @@ public class StarSystem
 	    random = new Random();
 	
 	position = new Vector2();
-	size = 2000;
+	size = 10000;
 	planets = new ArrayList<Planet>();
         
         generate();
@@ -36,31 +36,39 @@ public class StarSystem
         planets.clear();
         
         sun = addSun();
+	
+	this.addPlanetInOrbit(sun);
+	this.addPlanetInOrbit(sun);
+	this.addPlanetInOrbit(sun);
+	this.addPlanetInOrbit(sun);
     }
     
     private Sun addSun()
     {
         Sun aSun = new Sun();
-        aSun.setRadius(200);
-        aSun.setPosition(new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2));
+        aSun.setRadius(100);
+        aSun.setPosition(new Vector2(0,0));
         planets.add(aSun);
-        
+	
         return aSun;
     }
     
     private Planet addPlanetInOrbit(Planet parentPlanet)
     {
         int range = random.nextInt(size);
+	
+	while(parentPlanet.isPlanetInRange(range, MINIMAL_PLANET_DISTANCE) || parentPlanet.getRadius() * 2 > range)
+	{
+	    range = random.nextInt(size);
+	}
         
         Planet planet = new Planet();
         planet.setRadius(random.nextInt(Planet.PLANET_MAX_RADIUS));
         
         Vector2 randomVector = new Vector2((random.nextFloat() * 2 - 1), (random.nextFloat() * 2 - 1));
         randomVector = randomVector.nor().scl(range);
-        planet.setPosition(parentPlanet.getPosition().add(randomVector));
-        
-        System.out.print("range: " + range);
-        System.out.print(" - dis: " + planet.getPosition().dst(parentPlanet.getPosition()) + "\n");
+        planet.setPosition(parentPlanet.getPosition().cpy());
+	planet.getPosition().add(randomVector);
         
         parentPlanet.addOrbiter(planet);
         planets.add(planet);

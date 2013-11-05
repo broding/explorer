@@ -83,7 +83,7 @@ public class Planet
         {
             float rangee = planet.getPosition().dst(getPosition());
             
-            if (rangee - minDistance <= range && range < rangee + minDistance)
+            if(range > rangee - minDistance && range < rangee + minDistance)
                 return true;
         }
         
