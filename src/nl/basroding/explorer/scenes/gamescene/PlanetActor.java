@@ -40,7 +40,7 @@ public class PlanetActor extends Actor
 	    {
 		if(button == 0)
 		{
-		    Game.getCamera().setPosition(planet.getPosition());
+		    Game.getCamera().setTarget(planet.getPosition());
 		    
 		    return true;
 		}

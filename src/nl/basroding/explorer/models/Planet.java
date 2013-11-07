@@ -9,8 +9,8 @@ import java.util.ArrayList;
  */
 public class Planet
 {
-    public final static int PLANET_MAX_RADIUS = 40;
-    public final static int PLANET_MIN_RADIUS = 1;
+    public final static int PLANET_MAX_RADIUS = 100;
+    public final static int PLANET_MIN_RADIUS = 40;
     
     private Vector2 position;
     private float radius;
