@@ -10,12 +10,12 @@ import static nl.basroding.explorer.models.StarSystem.random;
  *
  * @author basroding
  */
-public class Galaxy
+public class Galaxy implements Model
 {
     public static Random random;
     
     private Vector2 size;
-    private ArrayList<StarSystem> planets;
+    private ArrayList<StarSystem> systems;
     
     public Galaxy()
     {
@@ -23,7 +23,7 @@ public class Galaxy
 	    random = new Random();
 	
 	size = new Vector2(10, 10);
-	planets = new ArrayList<StarSystem>();
+	systems = new ArrayList<StarSystem>();
 	
 	addStarSystem(new StarSystem());
 	addStarSystem(new StarSystem());
@@ -31,7 +31,7 @@ public class Galaxy
     
     private void addStarSystem(StarSystem starSystem)
     {
-	planets.add(starSystem);
+	systems.add(starSystem);
 	starSystem.setPositionX(random.nextInt((int) size.x));
 	starSystem.setPositionY(random.nextInt((int) size.y));
 	
@@ -39,6 +39,19 @@ public class Galaxy
 
     public List<StarSystem> getStarSystems()
     {
-	return planets;
+	return systems;
+    }
+
+    @Override
+    public void tick()
+    {
+        for(StarSystem system : this.systems)
+            system.tick();
+    }
+
+    @Override
+    public void frameTick(float deltaTime)
+    {
+        
     }
 }

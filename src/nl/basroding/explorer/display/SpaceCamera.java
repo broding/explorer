@@ -10,6 +10,12 @@ import com.badlogic.gdx.math.Vector2;
  */
 public final class SpaceCamera extends OrthographicCamera
 {
+    public static final int SCROLL_EDGE = 20;
+    public static final float SCROLL_SPEED = 3;
+    
+    public float maxZoom;
+    public float minZoom;
+    
     private float scrollSpeed;
     private Vector2 targetPosition;
     private Vector2 spacePosition;
@@ -20,6 +26,9 @@ public final class SpaceCamera extends OrthographicCamera
     
     public SpaceCamera()
     {
+        this.maxZoom = Float.MAX_VALUE;
+        this.minZoom = 0;
+        
         this.viewportWidth = Gdx.graphics.getWidth();
         this.viewportHeight = Gdx.graphics.getHeight();
         this.near = 0;
@@ -54,16 +63,16 @@ public final class SpaceCamera extends OrthographicCamera
         if(this.isMouseOutOfBounds() && !targeting)
         {
             Vector2 mouseDirection = this.getMouseDirection();
-            this.setPosition(spacePosition.cpy().add(mouseDirection));
+            this.setPosition(spacePosition.cpy().add(mouseDirection.scl(SCROLL_SPEED * zoom)));
         }
     }
     
     private boolean isMouseOutOfBounds()
     {
-        return Gdx.input.getX() > Gdx.graphics.getWidth() ||
-                Gdx.input.getX() < 0 ||
-                Gdx.input.getY() < 0 ||
-                Gdx.input.getY() > Gdx.graphics.getHeight();
+        return Gdx.input.getX() > Gdx.graphics.getWidth() - SCROLL_EDGE ||
+                Gdx.input.getX() < 0 + SCROLL_EDGE ||
+                Gdx.input.getY() < 0 + SCROLL_EDGE ||
+                Gdx.input.getY() > Gdx.graphics.getHeight() - SCROLL_EDGE;
     }
     
     /**
@@ -72,34 +81,17 @@ public final class SpaceCamera extends OrthographicCamera
      */
     private Vector2 getMouseDirection()
     {
-        Vector2 vector = Vector2.Zero;
-        int distanceFromCentre = 0;
+        Vector2 vector = Vector2.Zero.cpy();
         
-        // setup west
-        distanceFromCentre = Gdx.graphics.getWidth() / 2 - Gdx.input.getX();
-        vector.x = 1;
-        
-        // check east
-        if(distanceFromCentre < Gdx.input.getX() - Gdx.graphics.getWidth() / 2)
-        {
-            distanceFromCentre = Gdx.input.getX() - Gdx.graphics.getWidth() / 2;
-            vector = Vector2.Zero;
+        if(Gdx.input.getX() > Gdx.graphics.getWidth() - SCROLL_EDGE)
+            vector.x = 1;
+        else if(Gdx.input.getX() < 0 + SCROLL_EDGE)
             vector.x = -1;
-        }
         
-        if(distanceFromCentre < Gdx.input.getY() - Gdx.graphics.getHeight() / 2)
-        {
-            distanceFromCentre = Gdx.graphics.getHeight() / 2 - Gdx.input.getY();
-            vector = Vector2.Zero;
-            vector.y = 1;
-        }
-        
-        if(distanceFromCentre < Gdx.input.getY() - Gdx.graphics.getHeight() / 2)
-        {
-            distanceFromCentre = Gdx.input.getY() - Gdx.graphics.getHeight() / 2;
-            vector = Vector2.Zero;
+        if(Gdx.input.getY() > Gdx.graphics.getHeight() - SCROLL_EDGE)
             vector.y = -1;
-        }
+        else if(Gdx.input.getY() < 0 + SCROLL_EDGE)
+            vector.y = 1;
         
         return vector;
     }
@@ -121,5 +113,12 @@ public final class SpaceCamera extends OrthographicCamera
     {
         spacePosition = position;
 	this.position.set(position.x, position.y, 0);
+    }
+    
+    public void setZoom(float zoom)
+    {
+        this.zoom = zoom;
+        this.zoom = Math.min(this.zoom, this.maxZoom);
+        this.zoom = Math.max(this.zoom, this.minZoom);
     }
 }

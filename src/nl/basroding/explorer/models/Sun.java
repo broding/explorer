@@ -12,8 +12,8 @@ package nl.basroding.explorer.models;
  */
 public class Sun extends Planet
 {
-    public final static int SUN_MAX_RADIUS = 300;
-    public final static int SUN_MIN_RADIUS = 180;
+    public final static int SUN_MAX_RADIUS = 700;
+    public final static int SUN_MIN_RADIUS = 400;
     
     public Sun()
     {

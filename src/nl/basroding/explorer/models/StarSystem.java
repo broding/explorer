@@ -9,14 +9,16 @@ import java.util.Random;
  *
  * @author basroding
  */
-public class StarSystem
+public class StarSystem implements Model
 {   
     public final static int MINIMAL_PLANET_DISTANCE = Sun.SUN_MIN_RADIUS * 3;
     public static Random random;
     
     private Vector2 position;
     private int size;
+    
     private ArrayList<Planet> planets;
+    
     private Sun sun;
     
     public StarSystem()
@@ -99,5 +101,23 @@ public class StarSystem
     public Iterable<Planet> getPlanets()
     {
 	return this.planets;
+    }
+    
+    public int getSize()
+    {
+        return 10000;
+    }
+
+    @Override
+    public void tick()
+    {
+        for(Planet planet : this.planets)
+            planet.tick();
+    }
+
+    @Override
+    public void frameTick(float deltaTime)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

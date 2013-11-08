@@ -23,4 +23,9 @@ public class Game
     {
 	return core.getCamera();
     }
+    
+    public static void setCamera(SpaceCamera camera)
+    {
+        core.setCamera(camera);
+    }
 }

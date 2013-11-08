@@ -29,7 +29,7 @@ public class ZoomableGroup extends Group
     
     public void onZoomInput(float zoom)
     {
-	Game.getCamera().zoom += Game.getCamera().zoom / 100 * zoom;
+	Game.getCamera().setZoom(Game.getCamera().zoom + Game.getCamera().zoom / 100 * zoom);
 	Game.getCamera().update();
     }
     

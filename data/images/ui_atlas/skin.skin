@@ -1,0 +1,40 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: { default-font: { file: default.fnt } },
+com.badlogic.gdx.graphics.g2d.BitmapFont: { aller11: { file: aller11.fnt } },
+com.badlogic.gdx.graphics.g2d.BitmapFont: { aller16: { file: aller16.fnt } },
+com.badlogic.gdx.graphics.g2d.BitmapFont: { allerbold30: { file: allerbold30.fnt } },
+com.badlogic.gdx.graphics.g2d.BitmapFont: { allerlight11: { file: allerlight11.fnt } },
+
+com.badlogic.gdx.graphics.Color: {
+	green: { a: 1, b: 0, g: 1, r: 0 },
+	white: { a: 1, b: 1, g: 1, r: 1 },
+	red: { a: 1, b: 0, g: 0, r: 1 },
+	black: { a: 1, b: 0, g: 0, r: 0 },
+	darkgray: { a: 1, b: 0.3, g: 0.3, r: 0.3 },
+        transparent: { a:0, b: 0, g:0, r:0 }
+},
+com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
+	dialogDim: { name: white, color: { r: 0, g: 0, b: 0, a: 0.45 } },
+	sidemenu-highlight: { name: sidemenu, color: { r: 1, g: 1, b: 1, a: 0.45 } },
+	button_red: { name: button_white, color: { r: 0.6, g: 0.2, b: 0.2, a: 1 } },
+	button_red_hightlight: { name: button_white, color: { r: 0.7, g: 0.3, b: 0.3, a: 1 } },
+	transparent: { name: white, color: { r: 0, g: 0, b: 0, a: 0 } },
+},
+
+com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+	default: { font: allerlight11, fontColor: white },
+	window_title: { font: aller16, fontColor: red },
+	page_title: { font: allerbold30, fontColor: white }
+},
+
+com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+	default:  { down: button_white, up: button_white, over: button_white, font: aller11, fontColor: black, overFontColor: red },
+	sidebar: { down: sidemenu, up: sidemenu, over: sidemenu_hover, font: aller11, fontColor: white, unpressedOffsetY: -20, pressedOffsetY: -20 },
+	sidebar_special: { down: sidemenu_special, up: sidemenu_special, over: sidemenu_special_hover, font: aller11, fontColor: white, unpressedOffsetY: -20, pressedOffsetY: -20 },
+	titled_window: { down: button_white, up: button_white, over: button_white, font: aller11, fontColor: black, overFontColor: darkgray },
+},
+
+com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
+	default: { font: aller11, fontColorSelected: white, fontColorUnselected: white, selection: transparent },
+}
+}

@@ -7,7 +7,7 @@ import java.util.ArrayList;
  *
  * @author basroding
  */
-public class Planet
+public class Planet implements Model
 {
     public final static int PLANET_MAX_RADIUS = 100;
     public final static int PLANET_MIN_RADIUS = 40;
@@ -88,5 +88,17 @@ public class Planet
         }
         
         return false;
+    }
+
+    @Override
+    public void tick()
+    {
+    
+    }
+
+    @Override
+    public void frameTick(float deltaTime)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
