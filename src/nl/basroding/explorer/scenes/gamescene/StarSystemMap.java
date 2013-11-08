@@ -18,6 +18,7 @@ public class StarSystemMap extends ZoomableGroup
         
 	this.system = system;
         Game.getCamera().maxZoom = system.getSize() / 170;
+        Game.getCamera().minZoom = 0.5f;
 	
 	for(Planet planet : system.getPlanets())
 	    this.addActor(new PlanetActor(planet));
